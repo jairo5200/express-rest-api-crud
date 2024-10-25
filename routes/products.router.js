@@ -1,6 +1,5 @@
 const express = require('express');
 
-
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -22,3 +21,6 @@ router.patch('/', (req, res) => {
 router.delete('/', (req, res) => {
     res.send('eliminando producto...')
 });
+
+
+module.exports = router;
