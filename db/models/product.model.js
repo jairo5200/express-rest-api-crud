@@ -1,6 +1,10 @@
+// importamos Model DataTypes y Sequelize para poder utilizarlos
 const {Model, DataTypes, Sequelize} = require('sequelize');
 
+
+// Creamos un nombre para la tabla de productos
 const PRODUCT_TABLE = 'products';
+// Creamos un esquema para la tabla de productos
 const ProductSchema = {
     id:{
         allownull: false,
@@ -8,19 +12,19 @@ const ProductSchema = {
         autoIncrement: true,
         type: DataTypes.INTEGER,
     },
-    nombre:{
+    name:{
         allownull:false,
         type: DataTypes.STRING,
         },
-    descripcion:{
+    description:{
         allownull:false,
         type: DataTypes.STRING,
     },
-    precio:{
+    price:{
         allownull:false,
         type: DataTypes.DECIMAL(10,2),
     },
-    cantidad:{
+    amount:{
         allownull:false,
         type: DataTypes.INTEGER,
     },
@@ -32,6 +36,7 @@ const ProductSchema = {
     }
 }
 
+// Creamos la clase Product que hereda de Model
 class Product extends Model{
     static config(sequelize){
         return{
@@ -45,5 +50,6 @@ class Product extends Model{
 
 
 
+// importamos el nombre de la tabla, su esquema y la clase Product para que puedan ser utilizados en otros archivos
 module.exports = {PRODUCT_TABLE,ProductSchema,Product};
 

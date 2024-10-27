@@ -1,10 +1,14 @@
+
 const express = require('express');
 
+//importamos el modulo de servicios de productos
 const ProductsService = require('../services/product.service')
 
-
 const router = express.Router();
+
+//creamos un objeto e inciializamos para poder usar sus metodos
 const service = new ProductsService();
+
 
 router.get('/', (req, res) => {
     const products = service.find();
@@ -28,4 +32,5 @@ router.delete('/', (req, res) => {
 });
 
 
+//exportamos el router para poder usarlo en otros archivos
 module.exports = router;
