@@ -10,13 +10,14 @@ const router = express.Router();
 const service = new ProductsService();
 
 
-router.get('/', (req, res) => {
-    const products = service.find();
+router.get('/', async  (req, res, next) => {
+    const products = await service.find();
     res.json(products);
 });
 
-router.get('/:id', (req, res) => {
-    res.send('obteniendo producto...')
+router.get('/:id', async  (req, res, next) => {
+    const product = await service.findOne(req.params.id);
+    res.json(product);
 });
 
 router.post('/', (req, res) => {
