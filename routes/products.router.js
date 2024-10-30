@@ -20,16 +20,22 @@ router.get('/:id', async  (req, res, next) => {
     res.json(product);
 });
 
-router.post('/', (req, res) => {
-    res.send('publicando producto...')
+router.post('/', async  (req, res, next) => {
+    const body = req.body;
+    const newProduct = await service.create(body);
+    res.status(201).json(newProduct);
 });
 
-router.patch('/', (req, res) => {
-    res.send('editando producto...')
+router.patch('/:id', async  (req, res, next) => {
+    const id = req.params.id;
+    const body = req.body;
+    const product = await service.update(id,body);
+    res.status(201).json(product);
 });
 
-router.delete('/', (req, res) => {
-    res.send('eliminando producto...')
+router.delete('/:id', async  (req, res, next) => {
+    const product = await service.delete(req.params.id);
+    res.json(product);
 });
 
 

@@ -5,7 +5,7 @@ const {Model, DataTypes, Sequelize} = require('sequelize');
 // Creamos un nombre para la tabla de productos
 const PRODUCT_TABLE = 'products';
 // Creamos un esquema para la tabla de productos
-const ProductSchema = {
+const productSchema = {
     id:{
         allownull: false,
         primaryKey: true,
@@ -51,5 +51,5 @@ class Product extends Model{
 
 
 // importamos el nombre de la tabla, su esquema y la clase Product para que puedan ser utilizados en otros archivos
-module.exports = {PRODUCT_TABLE,ProductSchema,Product};
+module.exports = {PRODUCT_TABLE,productSchema,Product};
 

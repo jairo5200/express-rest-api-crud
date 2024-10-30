@@ -19,6 +19,22 @@ class ProductsService{
         const rta = models.Product.findOne({where: {id: id}});
         return rta;
     }
+
+    async create(data) {
+        const newProduct = await models.Product.create(data);
+        return newProduct;
+    }
+
+    async update(id,data){
+        const product = await models.Product.findOne({where: {id: id}});
+        const rta = product.update(data);
+        return rta;
+    }
+
+    async delete(id){
+        const rta = models.Product.destroy({where: {id: id}});
+        return rta;
+    }
 }
 
 // exportamos la clase ProductsService
