@@ -59,4 +59,4 @@ class OrderProduct extends Model{
     }
 }
 
-module.exports = {OrderProduct, ORDER_PRODUCT_TABLE,OrderProductSchema};
+module.exports = {OrderProduct, ORDER_PRODUCT_TABLE,orderProductSchema};

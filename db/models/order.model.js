@@ -64,3 +64,5 @@ class Order extends Model{
         }
     }
 }
+
+module.exports = {Order,orderSchema,ORDER_TABLE};

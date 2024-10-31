@@ -32,6 +32,12 @@ const userSchema = {
 }
 
 class User extends Model{
+    static associate(models){
+        this.hasMany(models.Order, {
+          as: 'Orders',
+        foreignKey: 'userId'
+        })
+      }
     static config(sequelize){
         return{
             sequelize,
