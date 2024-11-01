@@ -15,6 +15,7 @@ function setupModels(sequelize){
     OrderProduct.init(orderProductSchema, OrderProduct.config(sequelize));
 
     // establecemos las relaciones entre los modelos
+    User.associate(sequelize.models);
     Order.associate(sequelize.models);
 }
 

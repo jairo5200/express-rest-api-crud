@@ -32,15 +32,15 @@ const orderProductSchema = {
         onDelete: 'SET NULL',
     },
     productId: {
-    allowNull: false,
-    field: 'product_id',
-    type: DataTypes.INTEGER,
-    references: {
-        model: 'products',
-        key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+        allowNull: false,
+        field: 'product_id',
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'products',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
     }
 };
 

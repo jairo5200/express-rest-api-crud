@@ -12,7 +12,7 @@ const orderSchema = {
         allownull:false,
     },
     status:{
-        tupe: DataTypes.STRING,
+        type: DataTypes.STRING,
         allownull:false,
     },
     createAt:{
