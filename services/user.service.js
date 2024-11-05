@@ -1,3 +1,4 @@
+const boom =  require('@hapi/boom');
 const {models} = require('../libs/sequelize')
 
 class UserService{
@@ -14,6 +15,9 @@ class UserService{
 
     async findOne(id){
         const user = await models.User.findOne({where: {id :id}});
+        if (!user) {
+            throw boom.notFound('user not found');
+        }
         return user
     }
 
@@ -23,13 +27,25 @@ class UserService{
     }
 
     async update(id,data){
-        const user = await models.User.update(data,{where:{id:id}});
-        return user;
+        const user = await models.User.findOne({where:{id:id}});
+        if (!user) {
+            throw boom.notFound('user not found');
+        }
+        const rta = await user.update(data);
+        return rta;
     }
 
     async delete(id){
-        const user = await models.User.destroy({where:{id:id}});
-        return user;
+        const user = await models.User.findOne({where:{id:id}})
+        if (!user) {
+            throw boom.notFound('user not found');
+        }
+        await models.User.destroy();
+        const rta = {
+            message: 'user deleted',
+            id: id
+        }
+        return rta;
     }
 
 }

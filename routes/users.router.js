@@ -1,5 +1,9 @@
 const express = require('express');
 
+const validatorHandler = requiere('../middlewares/validator.handler')
+
+const {createUserSchema,updateUserSchema,getUserSchema} = require('../schemas/user.schema')
+
 //importamos el modulo de servicios de usuarios
 const UserService = require('../services/user.service')
 
@@ -13,27 +17,52 @@ router.get('/', async  (req, res, next) => {
     res.json(users);
 });
 
-router.get('/:id', async  (req, res, next) => {
-    const user = await service.findOne(req.params.id);
-    res.json(user);
+router.get('/:id', 
+    validatorHandler(getUserSchema,'params'),
+    async  (req, res, next) => {
+        try {
+            const user = await service.findOne(req.params.id);
+            res.json(user);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.post('/', async  (req, res, next) => {
-    const body = req.body;
-    const newUser = await service.create(body);
-    res.status(201).json(newUser);
+router.post('/', 
+    validatorHandler(createUserSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const body = req.body;
+            const newUser = await service.create(body);
+            res.status(201).json(newUser);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.patch('/:id', async  (req, res, next) => {
-    const id = req.params.id;
-    const body = req.body;
-    const user = await service.update(id,body);
-    res.status(201).json(user);
+router.patch('/:id', 
+    validatorHandler(getUserSchema,'params'),
+    validatorHandler(updateUserSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const id = req.params.id;
+            const body = req.body;
+            const user = await service.update(id,body);
+            res.status(201).json(user);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.delete('/:id', async  (req, res, next) => {
-    const user = await service.delete(req.params.id);
-    res.json(user);
+router.delete('/:id', 
+    validatorHandler(getUserSchema,'params'),
+    async  (req, res, next) => {
+        try {
+            const user = await service.delete(req.params.id);
+            res.json(user);
+        } catch (error) {
+            next(error);
+        }
 });
 
 //exportamos el router para poder usarlo en otros archivos

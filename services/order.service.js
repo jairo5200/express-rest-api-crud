@@ -1,3 +1,4 @@
+const boom = require('@hapi/boom');
 const {models} = require('../libs/sequelize')
 
 class OrderService{
@@ -13,6 +14,9 @@ class OrderService{
 
     async findOne(id){
         const order = await models.Order.findOne({where: {id: id}});
+        if (!order) {
+            throw boom.notFound('order not found');
+        }
         return order;
     }
 
@@ -22,13 +26,25 @@ class OrderService{
     }
 
     async update(id,data){
-        const order = await models.Order.update(data,{where: {id: id}})
-        return order;
+        const order = await models.Order.findOne({where: {id:id}})
+        if (!order) {
+            throw boom.notFound('order not found');
+        }
+        const rta = await order.update(data)
+        return rta;
     }
 
     async delete(id){
-        const order = await models.Order.destroy({where: {id: id}})
-        return order;
+        const order = await models.Order.findOne({where: {id:id}})
+        if (!order) {
+            throw boom.notFound('order not found');
+        }
+        await order.destroy();
+        const rta = {
+            message: 'order deleted',
+            id: id
+        }
+        return rta;
     }
 }
 

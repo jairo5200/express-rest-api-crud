@@ -1,5 +1,9 @@
 const express = require('express');
 
+const validatorHandler = require('../middlewares/validator.handler')
+
+const {createOrderSchema,updateOrderSchema,getOrderSchema} = require('../schemas/order.schema')
+
 //importamos el modulo de servicios de usuarios
 const OrderService = require('../services/order.service')
 
@@ -13,27 +17,53 @@ router.get('/', async  (req, res, next) => {
     res.json(orders);
 });
 
-router.get('/:id', async  (req, res, next) => {
-    const order = await service.findOne(req.params.id);
-    res.json(order);
+router.get('/:id', 
+    validatorHandler(getOrderSchema,'params'),
+    async  (req, res, next) => {
+        try {
+            const order = await service.findOne(req.params.id);
+            res.json(order);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.post('/', async  (req, res, next) => {
-    const body = req.body;
-    const newOrder = await service.create(body);
-    res.status(201).json(newOrder);
+router.post('/', 
+    validatorHandler(createOrderSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const body = req.body;
+            const newOrder = await service.create(body);
+            res.status(201).json(newOrder);
+        } catch (error) {
+            next(error);
+        }
+
 });
 
-router.patch('/:id', async  (req, res, next) => {
-    const id = req.params.id;
-    const body = req.body;
-    const order = await service.update(id,body);
-    res.status(201).json(order);
+router.patch('/:id', 
+    validatorHandler(getOrderSchema,'params'),
+    validatorHandler(updateOrderSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const id = req.params.id;
+            const body = req.body;
+            const order = await service.update(id,body);
+            res.status(201).json(order);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.delete('/:id', async  (req, res, next) => {
-    const order = await service.delete(req.params.id);
-    res.json(order);
+router.delete('/:id', 
+    validatorHandler(getOrderSchema,'params'),
+    async  (req, res, next) => {
+        try {
+            const order = await service.delete(req.params.id);
+            res.json(order);
+        } catch (error) {
+            next(error);
+        }
 });
 
 //exportamos el router para poder usarlo en otros archivos
