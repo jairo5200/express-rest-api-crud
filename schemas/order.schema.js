@@ -18,4 +18,4 @@ const getOrderSchema = Joi.object({
     id: id.required(),
 });
 
-module.export = {createOrderSchema,updateOrderSchema,getOrderSchema};
+module.exports = {createOrderSchema,updateOrderSchema,getOrderSchema};

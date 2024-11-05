@@ -1,6 +1,6 @@
 const express = require('express');
 
-const validatorHandler = requiere('../middlewares/validator.handler')
+const validatorHandler = require('../middlewares/validator.handler')
 
 const {createUserSchema,updateUserSchema,getUserSchema} = require('../schemas/user.schema')
 
