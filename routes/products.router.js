@@ -1,5 +1,9 @@
 const express = require('express');
 
+const validatorHandler = require('../middlewares/validator.handler');
+
+const {createProductSchema,updateProductSchema,getProductSchema} = require('../schemas/product.schema')
+
 //importamos el modulo de servicios de productos
 const ProductsService = require('../services/product.service')
 
@@ -14,7 +18,9 @@ router.get('/', async  (req, res, next) => {
     res.json(products);
 });
 
-router.get('/:id', async  (req, res, next) => {
+router.get('/:id',
+    validatorHandler(getProductSchema,'params'),
+    async  (req, res, next) => {
     const product = await service.findOne(req.params.id);
     res.json(product);
 });
