@@ -1,3 +1,4 @@
+const boom = require('@hapi/boom');
 const {models} = require('../libs/sequelize')
 
 
@@ -17,6 +18,9 @@ class ProductsService{
     // creamos el metodo findOne que nos retorna el product con el id
     async findOne(id){
         const product = await models.Product.findOne({where: {id: id}});
+        if (!product) {
+            throw boom.notFound('product not found');
+        }
         return product;
     }
 
@@ -27,12 +31,23 @@ class ProductsService{
 
     async update(id,data){
         const product = await models.Product.findOne({where: {id: id}});
+        if (!product) {
+            throw boom.notFound('product not found')
+        }
         const rta = product.update(data);
         return rta;
     }
 
     async delete(id){
-        const rta = await models.Product.destroy({where: {id: id}});
+        const product = await models.Product.findOne({where: {id: id}});
+        if (!product) {
+            throw boom.notFound('product not found')
+        }
+        await product.destroy(product);
+        const rta = {
+            message: 'product deleted',
+            id: id
+        }
         return rta;
     }
 }

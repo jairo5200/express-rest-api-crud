@@ -21,26 +21,46 @@ router.get('/', async  (req, res, next) => {
 router.get('/:id',
     validatorHandler(getProductSchema,'params'),
     async  (req, res, next) => {
-    const product = await service.findOne(req.params.id);
-    res.json(product);
+        try {
+            const product = await service.findOne(req.params.id);
+            res.json(product);
+        } catch (error) {
+            next(error)
+        }
 });
 
-router.post('/', async  (req, res, next) => {
+router.post('/',
+    validatorHandler(createProductSchema, 'body'),
+    async  (req, res, next) => {
     const body = req.body;
     const newProduct = await service.create(body);
     res.status(201).json(newProduct);
 });
 
-router.patch('/:id', async  (req, res, next) => {
-    const id = req.params.id;
-    const body = req.body;
-    const product = await service.update(id,body);
-    res.status(201).json(product);
+router.patch('/:id',
+    validatorHandler(getProductSchema, 'params'),
+    validatorHandler(updateProductSchema, 'body'),
+    async  (req, res, next) => {
+        try {
+            const id = req.params.id;
+            const product = await service.findOne(id);
+            const body = req.body;
+            const rta = await product.update(body);
+            res.status(201).json(rta);
+        } catch (error) {
+            next(error);
+        }
 });
 
-router.delete('/:id', async  (req, res, next) => {
-    const product = await service.delete(req.params.id);
-    res.json(product);
+router.delete('/:id',
+    validatorHandler(getProductSchema,'params'),
+    async  (req, res, next) => {
+        try {
+            const product = await service.delete(req.params.id);
+            res.json(product);
+        } catch (error) {
+            next(error);
+        }
 });
 
 
