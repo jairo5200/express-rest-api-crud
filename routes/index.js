@@ -5,7 +5,7 @@ const productsRouter = require('./products.router')
 
 const usersRouter = require('./users.router')
 
-const ordersRouter = require('./orders.router')
+const ordersRouter = require('./order.router')
 
 // funcion que hace el routing a los diferentes subniveles de la api
 function routerApi(app){

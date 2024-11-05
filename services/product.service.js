@@ -11,13 +11,13 @@ class ProductsService{
 
     // creamos el metodo find que retorna todos los products en la base de datos
      async find(){
-        const rta = models.Product.findAll();
-        return rta;
+        const products = await models.Product.findAll();
+        return products;
     }
-    // creamos el metodo findOne que nos retrna el producto con el id
+    // creamos el metodo findOne que nos retorna el product con el id
     async findOne(id){
-        const rta = models.Product.findOne({where: {id: id}});
-        return rta;
+        const product = await models.Product.findOne({where: {id: id}});
+        return product;
     }
 
     async create(data) {
@@ -32,7 +32,7 @@ class ProductsService{
     }
 
     async delete(id){
-        const rta = models.Product.destroy({where: {id: id}});
+        const rta = await models.Product.destroy({where: {id: id}});
         return rta;
     }
 }
