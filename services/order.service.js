@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom');
-const {models} = require('../libs/sequelize')
+const {models} = require('../libs/sequelize');
+const { Product } = require('../db/models/product.model');
 
 class OrderService{
 
@@ -13,7 +14,14 @@ class OrderService{
     }
 
     async findOne(id){
-        const order = await models.Order.findOne({where: {id: id}});
+        const order = await models.Order.findOne({
+            where: {id: id}},
+            {include: [{
+                model: Product,
+                as: 'product',
+                attributes: ['price','amount'],
+            }]},
+        );
         if (!order) {
             throw boom.notFound('order not found');
         }
@@ -45,6 +53,20 @@ class OrderService{
             id: id
         }
         return rta;
+    }
+
+    async addProduct(id,data){
+        console.log(data);
+        const order = await models.Order.findOne({where: {id:id}})
+        if (!order) {
+            throw boom.notFound('order not found');
+            }
+            const product = await models.Product.findOne({where: {id:data.productId}})
+            if (!product) {
+                throw boom.notFound('product not found');
+                }
+                const newProduct = await models.OrderProduct.create(data);
+                return newProduct;
     }
 }
 
