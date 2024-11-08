@@ -51,7 +51,6 @@ class OrderService{
     }
 
     async addProduct(id,data){
-        console.log(data);
         const order = await models.Order.findOne({where: {id:id}})
         if (!order) {
             throw boom.notFound('order not found');
@@ -69,6 +68,27 @@ class OrderService{
                     const newProduct = await models.OrderProduct.create(data);
                     return newProduct;  
                 }
+    }
+
+    async removeProduct(id,itemId){
+        const order = await models.Order.findOne({where: {id:id}})
+        if (!order) {
+            throw boom.notFound('order not found');
+            }
+            const removeItem = await models.OrderProduct.findOne({where: {id:itemId}});
+            if (!removeItem) {
+                throw boom.notFound('item not found');
+                }
+                const product = await models.Product.findOne({where: {id:removeItem.productId}})
+                if (!product) {
+                    throw boom.notFound('product not found');
+                }
+                await product.update({amount: product.amount+removeItem.amount});
+                removeItem.destroy();
+                return {
+                    message: 'item in order deleted',
+                    id: id
+                };     
     }
 }
 
