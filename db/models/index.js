@@ -16,7 +16,9 @@ function setupModels(sequelize){
 
     // establecemos las relaciones entre los modelos
     User.associate(sequelize.models);
+    Product.associate(sequelize.models);
     Order.associate(sequelize.models);
+    OrderProduct.associate(sequelize.models);
 }
 
 

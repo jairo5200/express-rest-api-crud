@@ -46,6 +46,13 @@ class Product extends Model{
             timestamps: false,
         }
     }
+    static associate(models){
+        this.belongsToMany(models.Order, {
+            as: 'items',
+            through: models.OrderProduct,
+            foreignKey: 'productId',
+          });
+    }
 }
 
 
