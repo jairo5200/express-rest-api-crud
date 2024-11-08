@@ -2,7 +2,7 @@ const express = require('express');
 
 const validatorHandler = require('../middlewares/validator.handler')
 
-const {createOrderSchema,updateOrderSchema,getOrderSchema,addProductSchema} = require('../schemas/order.schema')
+const {createOrderSchema,updateOrderSchema,getOrderSchema,addProductSchema,removeProductSchema} = require('../schemas/order.schema')
 
 //importamos el modulo de servicios de usuarios
 const OrderService = require('../services/order.service')
@@ -74,6 +74,20 @@ router.post('/:id/addproduct',
             const body = req.body;
             const newProduct = await service.addProduct(id,body);
             res.status(201).json(newProduct);
+        } catch (error) {
+            next(error);
+        }
+});
+
+router.delete('/:id/removeproduct/',
+    validatorHandler(getOrderSchema,'params'),
+    validatorHandler(removeProductSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const id = req.params.id;
+            const itemId = req.body.itemid;
+            const deleteProduct = await service.removeProduct(id,itemId);
+            res.status(201).json(deleteProduct);
         } catch (error) {
             next(error);
         }

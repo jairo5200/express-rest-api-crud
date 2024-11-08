@@ -91,7 +91,7 @@ class OrderService{
                     throw boom.notFound('product not found');
                 }
                 await product.update({amount: product.amount+removeItem.amount});
-                removeItem.destroy();
+                await removeItem.destroy();
                 return {
                     message: 'item in order deleted',
                     id: id
