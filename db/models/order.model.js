@@ -32,6 +32,9 @@ const orderSchema = {
     total:{
         type: DataTypes.VIRTUAL,
         get(){
+            if (!this.items) {
+                this.items = [];
+            }
             if (this.items.length > 0){
             return this.items.reduce((total,item)=>{
                 return total + (item.price * item.OrderProduct.amount);
@@ -45,14 +48,14 @@ const orderSchema = {
 class Order extends Model{
     static associate(models){
         this.belongsTo(models.User, {
-            as: 'user'
+            as: 'user',
         });
         this.belongsToMany(models.Product, {
             as: 'items',
             through: models.OrderProduct,
             foreignKey: 'orderId',
-
-        });
+            otherKey: 'productId',
+          });
     }
 
     static config(sequelize){

@@ -41,7 +41,7 @@ const orderProductSchema = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
-    }
+    },
 };
 
 

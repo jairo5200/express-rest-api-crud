@@ -1,6 +1,5 @@
 const boom = require('@hapi/boom');
 const {models} = require('../libs/sequelize');
-const { OrderProduct } = require('../db/models/order-product.model');
 
 class OrderService{
 
@@ -41,6 +40,14 @@ class OrderService{
         const order = await models.Order.findOne({where: {id:id}})
         if (!order) {
             throw boom.notFound('order not found');
+        }
+        const itemsOrder = await models.OrderProduct.findAll({where: {orderId:id}})
+        if (itemsOrder.length >0) {
+            itemsOrder.forEach(async (item) => {
+                const product = await models.Product.findOne({where: {id:item.productId}});
+                product.amount += item.amount;
+                item.destroy();
+            });
         }
         await order.destroy();
         const rta = {

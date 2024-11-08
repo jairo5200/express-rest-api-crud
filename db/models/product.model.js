@@ -22,7 +22,7 @@ const productSchema = {
     },
     price:{
         allownull:false,
-        type: DataTypes.DECIMAL(10,2),
+        type: DataTypes.INTEGER,
     },
     amount:{
         allownull:false,
@@ -33,8 +33,8 @@ const productSchema = {
         type: DataTypes.DATE,
         field: 'created_at',
         defaultValue: Sequelize.NOW,
-    }
-}
+    },
+};
 
 // Creamos la clase Product que hereda de Model
 class Product extends Model{
@@ -45,13 +45,6 @@ class Product extends Model{
             modelName: 'Product',
             timestamps: false,
         }
-    }
-    static associate(models){
-        this.belongsToMany(models.Order, {
-            as: 'items',
-            through: models.OrderProduct,
-            foreignKey: 'productId',
-          });
     }
 }
 
