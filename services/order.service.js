@@ -43,11 +43,10 @@ class OrderService{
         }
         const itemsOrder = await models.OrderProduct.findAll({where: {orderId:id}})
         if (itemsOrder.length >0) {
-            itemsOrder.forEach(async (item) => {
-                const product = await models.Product.findOne({where: {id:item.productId}});
-                product.amount += item.amount;
-                item.destroy();
-            });
+            // Elimina los productos de la orden
+            for (const item of itemsOrder) {
+            await this.removeProduct(id,item.id);
+            }
         }
         await order.destroy();
         const rta = {
