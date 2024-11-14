@@ -30,6 +30,9 @@ const addProductSchema = Joi.object({
   })
   
 const removeProductSchema = Joi.object({
-    itemid: itemid.required(),
+    id: id.required(),
+    itemId: itemid.required(),
 })
+
+
 module.exports = {createOrderSchema,updateOrderSchema,getOrderSchema,addProductSchema,removeProductSchema};

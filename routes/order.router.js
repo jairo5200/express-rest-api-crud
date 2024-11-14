@@ -79,13 +79,12 @@ router.post('/:id/addproduct',
         }
 });
 
-router.delete('/:id/removeproduct/',
-    validatorHandler(getOrderSchema,'params'),
-    validatorHandler(removeProductSchema,'body'),
+router.delete('/:id/removeproduct/:itemId',
+    validatorHandler(removeProductSchema,'params'),
     async  (req, res, next) => {
         try {
             const id = req.params.id;
-            const itemId = req.body.itemid;
+            const itemId = req.params.itemId;
             const deleteProduct = await service.removeProduct(id,itemId);
             res.status(201).json(deleteProduct);
         } catch (error) {
