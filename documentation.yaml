@@ -1,0 +1,652 @@
+openapi: 3.0.3
+info:
+  title: API Inventario de una tienda 1.0
+  description: |-
+    esta API se encarga del manejo de la base de datos del inventario de una tienda 
+    
+    Algunos links de ayuda:
+    - [El repositorio de la API](https://github.com/jairo5200/express-rest-api-crud)
+  contact:
+    email: jairo5200@gmail.com
+  version: 1.0.11
+
+servers:
+  - url: https:localhost:/inventario/api/v0
+tags:
+  - name: products
+    description: Endpoints de productos
+  - name: users
+    description: Endpoints de usuarios
+  - name: orders
+    description: Endpoints de ordenes
+
+paths:
+  /products/:
+    post:
+      tags:
+        - products
+      summary: Agrega un nuevo producto a la tienda
+      description: Agrega un nuevo producto a la tienda
+      operationId: addProduct
+      requestBody:
+        description: crea un nuevo producto en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'  
+        required: true
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Product not found
+    get:
+      tags:
+        - products
+      summary: Lista todos los productos de la tienda
+      description: Lista todos los productos de la tienda
+      operationId: findAllProducts
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product_result'  
+        '400':
+          description: "[]"
+        '404':
+          description: "[]"
+  /products/{productId}:
+    get:
+      tags:
+        - products
+      summary: Encuentra el Producto por Id
+      description: Encuentra y retorna el Producto por Id
+      operationId: getProductById
+      parameters:
+        - name: productId
+          in: path
+          description: ID del prodcuto a retornar
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product_result'  
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Prodcut not found
+    patch:
+      tags:
+        - products
+      summary: Actualiza un existente producto
+      description: Actualiza un existente producto por Id
+      operationId: updateProduct
+      parameters:
+        - name: productId
+          in: path
+          description: ID del prodcuto a retornar
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Actualiza un existente producto in la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'  
+        required: true
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Product not found
+    delete:
+      tags:
+        - products
+      summary: Elimina un Producto
+      description: Elimina un Producto
+      operationId: Elimina un Producto
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: productId
+          in: path
+          description: id del producto a eliminar
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product deleted
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+        '400':
+          description: Not found
+        '404':
+          description: product not found
+  /users/:
+    post:
+      tags:
+        - users
+      summary: Crea un usuario en la tienda
+      description: Crea un usuuario en la tienda
+      operationId: createUser
+      requestBody:
+        description: crea un nuevo producto en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'  
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_result'  
+        '400':
+          description: Not found
+        '404':
+          description: User not found
+    get:
+      tags:
+        - users
+      summary: Lista todos los productos de la tienda
+      description: Lista todos los productos de la tienda
+      operationId: findAllUsers
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_result'  
+        '400':
+          description: "[]"
+        '404':
+          description: "[]"
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Encuentra el Usuario por Id
+      description: Encuentra el Usuario por Id
+      operationId: findOneUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario a retornar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_result'  
+        '400':
+          description: Not found
+        '404':
+          description: User not found
+    patch:
+      tags:
+        - users
+      summary: Encuentra el Usuario por Id y lo actualiza
+      description: Encuentra el Usuario por Id y lo actualiza
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario a actualizar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        description: actualiza un usuario en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'  
+        required: true
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_result'  
+        '400':
+          description: Not found
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - users
+      summary: Encuentra el Usuario por Id y lo elimina
+      description: Encuentra el Usuario por Id y lo elimina
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario a eliminar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: user deleted
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+        '400':
+          description: Not found
+        '404':
+          description: User not found
+  /orders/:
+    post:
+      tags:
+        - orders
+      summary: Crea una orden en la tienda
+      description: Crea una orden en la tienda
+      operationId: createOrder
+      requestBody:
+        description: Crea una nueva orden en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'  
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+    get:
+      tags:
+        - orders
+      summary: Lista todas las ordenes de la tienda
+      description: Lista todas las ordenes de la tienda
+      operationId: findAllOrders
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order_result'  
+        '400':
+          description: "[]"
+        '404':
+          description: "[]"
+  /orders/{orderId}:
+    get:
+      tags:
+        - orders
+      summary: Encuentra la orden por Id
+      description: Encuentra la orden por Id
+      operationId: findOneOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: ID de la orden a retornar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+    patch:
+      tags:
+        - orders
+      summary: Encuentra la orden por Id y la actualiza
+      description: Encuentra la orden por Id y la actualiza
+      operationId: updateOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: ID de la orden a actualizar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        description: actualiza una orden en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'  
+        required: true
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+    delete:
+      tags:
+        - orders
+      summary: Encuentra la orden por Id y la elimina
+      description: Encuentra la orden por Id y la elimina
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: Id de la orden a eliminar
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: order deleted
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+  /orders/{orderId}/addproduct/:
+    post:
+      tags:
+        - orders
+      summary: Agrega un producto a orden en la tienda
+      description: Agrega un producto a orden en la tienda
+      operationId: addItem
+      parameters:
+        - name: orderId
+          in: path
+          description: ID de la orden a la cual agregaremos un producto
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        description: Agrega un producto a orden en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item'  
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item_result'  
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+  /orders/{orderId}/removeproduct/{itemId}:
+    delete:
+      tags:
+        - orders
+      summary: Elimina un producto en orden de la tienda
+      description: Elimina un producto en orden de la tienda
+      operationId: removeItem
+      parameters:
+        - name: orderId
+          in: path
+          description: Id de la orden a la cual eliminaremos un producto
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: itemId
+          in: path
+          description: Id del item el cual eliminaremos de la orden
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: item in order deleted
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+        '400':
+          description: Not found
+        '404':
+          description: Order not found
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: camisa
+        description:
+          type: string
+          example: camisa ejemplo en tallas desde la s a la m
+        price:
+          type: integer
+          format: int64
+          example: 1200
+        amount:
+          type: integer
+          example: 5
+        createdAt:
+          type: string
+          format: date-time
+    product_result:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: camisa
+        description:
+          type: string
+          example: camisa ejemplo en tallas desde la s a la m
+        price:
+          type: integer
+          format: int64
+          example: 1200
+        amount:
+          type: integer
+          example: 5
+        createdAt:
+          type: string
+          format: date-time
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+          example: nombre ejemplo
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: admin
+        createdAt:
+          type: string
+          format: date-time
+    user_result:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: nombre ejemplo
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: admin
+        createdAt:
+          type: string
+          format: date-time
+    order:
+      type: object
+      properties:
+        status:
+          type: string
+          example: sin_enviar
+        userId:
+          type: integer
+          format: int64
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+    order_result:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        status:
+          type: string
+          example: sin_enviar
+        userId:
+          type: integer
+          format: int64
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+    item:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          example: 1
+        productId:
+          type: integer
+          format: int64
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+    item_result:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        orderId:
+          type: integer
+          format: int64
+          example: 1
+        productId:
+          type: integer
+          format: int64
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          
