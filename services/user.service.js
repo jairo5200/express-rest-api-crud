@@ -1,5 +1,6 @@
 const boom =  require('@hapi/boom');
-const {models} = require('../libs/sequelize')
+const {models} = require('../libs/sequelize');
+const bcrypt = require('bcrypt');
 
 class UserService{
     
@@ -22,8 +23,21 @@ class UserService{
     }
 
     async create(data){
-        const user = await models.User.create(data);
-        return user;
+        const newUser = await models.User.findOne({where:{email:data.email}});
+        if (newUser) {
+            throw new Error("User already exist");
+        }
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+        const user = await models.User.create({
+            name: data.name,
+            email: data.email,
+            password: hashedPassword
+            });
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        };
     }
 
     async update(id,data){
