@@ -14,6 +14,7 @@ const config = {
     dbPort: process.env.DB_PORT,
     dbEngine: process.env.DB_ENGINE,
     dbUrl: process.env.POSTGRES_URL,
+    secretKey : process.env.SECRET_KEY,
 }
 
 // exportamos la constante config para poder usarla en otros archivos

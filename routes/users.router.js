@@ -1,9 +1,11 @@
 const express = require('express');
 
-const validatorHandler = require('../middlewares/validator.handler')
+const validatorHandler = require('../middlewares/validator.handler');
 
-const {createUserSchema,updateUserSchema,getUserSchema} = require('../schemas/user.schema')
+const {createUserSchema,updateUserSchema,getUserSchema,loginUserSchema} = require('../schemas/user.schema');
 
+const jwt = require('jsonwebtoken');
+const {config} = require('../config/config');
 //importamos el modulo de servicios de usuarios
 const UserService = require('../services/user.service')
 
@@ -60,6 +62,22 @@ router.delete('/:id',
         try {
             const user = await service.delete(req.params.id);
             res.json(user);
+        } catch (error) {
+            next(error);
+        }
+});
+
+router.post('/login', 
+    validatorHandler(loginUserSchema,'body'),
+    async  (req, res, next) => {
+        try {
+            const body = req.body;
+            const user = await service.login(body);
+            const token = jwt.sign({id: user.id,name: user.name,email: user.email}, config.secretKey,
+                {
+                expiresIn: '1h'
+                });
+            res.json(rta, token);
         } catch (error) {
             next(error);
         }

@@ -62,6 +62,21 @@ class UserService{
         return rta;
     }
 
+    async login(data){
+        const user = await models.User.findOne({where:{email:data.email}});
+        if (!user) {
+            throw boom.notFound('user not found');
+        }
+        const isValidPassword = await bcrypt.compare(data.password, user.password);
+        if (!isValidPassword) {
+            throw boom.badRequest('invalid password');
+        }
+        return{
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        }       
+    }
 }
 
 module.exports = UserService;
