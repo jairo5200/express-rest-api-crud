@@ -3,6 +3,7 @@ const {config} = require('./config/config');
 const morgan = require('morgan');
 const routerApi = require('./routes');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
+const cookieParser = require('cookie-parser');
 
 // inciializamos una aplicacion en express
 const app = express();
@@ -12,6 +13,7 @@ const port = config.port || 3000;
 
 // le decimos a la api que vamos a usar formato json
 app.use(express.json());
+app.use(cookieParser());
 
 
 

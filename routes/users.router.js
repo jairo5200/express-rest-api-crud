@@ -77,7 +77,13 @@ router.post('/login',
                 {
                 expiresIn: '1h'
                 });
-            res.json(rta, token);
+            res
+                .cookie('access_token', token,{
+                    httpOnly: true, // solo podremos acceder a esta cookie en el servidor
+                    secure: config.isProd === 'production',
+                    sameSite: 'strict',
+                })
+                .json(rta, token);
         } catch (error) {
             next(error);
         }
