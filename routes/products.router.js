@@ -14,6 +14,10 @@ const service = new ProductsService();
 
 
 router.get('/', async  (req, res, next) => {
+    const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
     const products = await service.find();
     res.json(products);
 });
@@ -21,6 +25,10 @@ router.get('/', async  (req, res, next) => {
 router.get('/:id',
     validatorHandler(getProductSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const product = await service.findOne(req.params.id);
             res.json(product);
@@ -32,15 +40,23 @@ router.get('/:id',
 router.post('/',
     validatorHandler(createProductSchema, 'body'),
     async  (req, res, next) => {
-    const body = req.body;
-    const newProduct = await service.create(body);
-    res.status(201).json(newProduct);
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
+        const body = req.body;
+        const newProduct = await service.create(body);
+        res.status(201).json(newProduct);
 });
 
 router.patch('/:id',
     validatorHandler(getProductSchema, 'params'),
     validatorHandler(updateProductSchema, 'body'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const id = req.params.id;
             const product = await service.findOne(id);
@@ -55,6 +71,10 @@ router.patch('/:id',
 router.delete('/:id',
     validatorHandler(getProductSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const product = await service.delete(req.params.id);
             res.json(product);

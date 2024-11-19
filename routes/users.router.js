@@ -14,7 +14,11 @@ const router = express.Router();
 //creamos un objeto e inciializamos para poder usar sus metodos
 const service = new UserService();
 
-router.get('/', async  (req, res, next) => {
+router.get('/',async  (req, res, next) => {
+    const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
     const users = await service.find();
     res.json(users);
 });
@@ -22,6 +26,10 @@ router.get('/', async  (req, res, next) => {
 router.get('/:id', 
     validatorHandler(getUserSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const user = await service.findOne(req.params.id);
             res.json(user);
@@ -46,6 +54,10 @@ router.patch('/:id',
     validatorHandler(getUserSchema,'params'),
     validatorHandler(updateUserSchema,'body'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const id = req.params.id;
             const body = req.body;
@@ -59,6 +71,10 @@ router.patch('/:id',
 router.delete('/:id', 
     validatorHandler(getUserSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const user = await service.delete(req.params.id);
             res.json(user);
@@ -83,11 +99,25 @@ router.post('/login',
                     secure: config.isProd === 'production',
                     sameSite: 'strict',
                 })
-                .json(rta, token);
+                .json(user);
         } catch (error) {
             next(error);
         }
-});
+    });
+
+router.post('/logout',
+    async (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
+        try {
+            res.clearCookie('access_token')
+            res.json({message: 'Logged out successfully'});
+        } catch (error) {
+            next(error);
+            }
+    });
 
 //exportamos el router para poder usarlo en otros archivos
 module.exports = router;

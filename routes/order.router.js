@@ -13,6 +13,10 @@ const router = express.Router();
 const service = new OrderService();
 
 router.get('/', async  (req, res, next) => {
+    const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
     const orders = await service.find();
     res.json(orders);
 });
@@ -20,6 +24,10 @@ router.get('/', async  (req, res, next) => {
 router.get('/:id', 
     validatorHandler(getOrderSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const order = await service.findOne(req.params.id);
             res.json(order);
@@ -31,6 +39,10 @@ router.get('/:id',
 router.post('/', 
     validatorHandler(createOrderSchema,'body'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const body = req.body;
             const newOrder = await service.create(body);
@@ -44,6 +56,10 @@ router.patch('/:id',
     validatorHandler(getOrderSchema,'params'),
     validatorHandler(updateOrderSchema,'body'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const id = req.params.id;
             const body = req.body;
@@ -57,6 +73,10 @@ router.patch('/:id',
 router.delete('/:id', 
     validatorHandler(getOrderSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const order = await service.delete(req.params.id);
             res.json(order);
@@ -69,6 +89,10 @@ router.post('/:id/addproduct',
     validatorHandler(getOrderSchema,'params'),
     validatorHandler(addProductSchema,'body'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const id = req.params.id;
             const body = req.body;
@@ -82,6 +106,10 @@ router.post('/:id/addproduct',
 router.delete('/:id/removeproduct/:itemId',
     validatorHandler(removeProductSchema,'params'),
     async  (req, res, next) => {
+        const {user} = req.session;
+        if (!user) {
+            res.status(403).send('Access not authorized');
+        }
         try {
             const id = req.params.id;
             const itemId = req.params.itemId;
