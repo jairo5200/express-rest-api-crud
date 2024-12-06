@@ -54,12 +54,14 @@ class UserService{
         if (!user) {
             throw boom.notFound('user not found');
         }
-        await models.User.destroy();
+        await user.destroy();
         const rta = {
-            message: 'user deleted',
-            id: id
+        message: 'user deleted',
+        id: id
         }
         return rta;
+        
+        
     }
 
     async login(data){

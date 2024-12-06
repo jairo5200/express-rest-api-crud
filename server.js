@@ -5,6 +5,7 @@ const routerApi = require('./routes');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const axios = require('axios')
 
 
 // inciializamos una aplicacion en express
@@ -57,7 +58,7 @@ app.use(morgan('custom', {
 }));
 
 
-function enviar(data){
+async function enviar(data){
     const info =data.split('-');
     body = {
         "date": info[0].trim(),
@@ -68,21 +69,9 @@ function enviar(data){
         "content_length": info[5].trim(),
         "email": info[6].trim(),
     }
-    console.log(body);
-    fetch("http://localhost:3002/api/v0/logs", {
-        method: 'POST',  // Especifica que es una solicitud POST
-        headers: {
-          'Content-Type': 'application/json'  // Especifica que el contenido es JSON
-        },
-        body: JSON.stringify(body)  // Convierte el objeto a JSON para enviarlo en el cuerpo de la solicitud
-      })
-        .then(response => response.json())  // Procesa la respuesta como JSON
-        .then(data => {
-          console.log('Respuesta del servidor:', data);  // Maneja los datos de la respuesta
-        })
-        .catch(error => {
-          console.error('Error al realizar la solicitud:', error);  // Maneja los errores
-        });
+      axios.post("http://localhost:3002/api/v0/logs", body)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 }
 
 routerApi(app);
