@@ -18,9 +18,10 @@ router.get('/',async  (req, res, next) => {
     const {user} = req.session;
         if (!user) {
             res.status(403).send('Access not authorized');
+        }else{
+            const users = await service.find();
+            res.json(users);
         }
-    const users = await service.find();
-    res.json(users);
 });
 
 router.get('/:id', 
