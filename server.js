@@ -61,13 +61,13 @@ app.use(morgan('custom', {
 async function enviar(data){
     const info =data.split('-');
     body = {
+        "email": info[6].trim(),
         "date": info[0].trim(),
         "method": info[1].trim(),
         "url": info[2].trim(),
         "status": info[3].trim(),
         "response_time": info[4].trim(),
         "content_length": info[5].trim(),
-        "email": info[6].trim(),
     }
       axios.post("http://localhost:3002/api/v0/logs", body)
       .then((res) => console.log(res.data))
