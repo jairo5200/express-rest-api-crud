@@ -60,8 +60,6 @@ class UserService{
         id: id
         }
         return rta;
-        
-        
     }
 
     async login(data){

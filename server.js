@@ -35,14 +35,14 @@ app.use((req,res,next) => {
     next(); 
 })
 
-// Personalizar el formato de morgan para incluir el email
+// Personalizamos el formato de morgan para incluir el email
 morgan.token('email', (req, res) => {
-    // Asegúrate de que req.user exista antes de acceder a su email
+    // validamos que exista una session de usuario en caso contrario enviaremos no logeado
     return req.session.user && req.session.user.email ? req.session.user.email : 'no logeado';
 });
 
 
-// Personaliza el formato de morgan para incluir el email
+// Personalizamos el formato de morgan para incluir el email
 morgan.format('custom', ':date - :method - :url - :status - :response-time ms - :res[content-length] - :email');
 
 
@@ -51,10 +51,10 @@ morgan.format('custom', ':date - :method - :url - :status - :response-time ms - 
 app.use(morgan('custom', {
   stream: {
     write: (log) => {
-    enviar(log.trim());  // Enviar el log a tu función personalizada
+    enviar(log.trim());  // Enviar el log a la función que enviara la ifnormacion a la api de logs
     }
   },
-  skip: (req, res) => false,  // Asegúrate de que morgan no omita el log
+  skip: (req, res) => false,
 }));
 
 
