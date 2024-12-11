@@ -12,7 +12,7 @@ const axios = require('axios')
 const app = express();
 
 // creamos la constante port con el valor dado en el .env en caso de no haber se elige el 3000 por defecto
-const port = config.port || 3000;
+const port = config.port || 3001;
 
 
 
@@ -66,8 +66,8 @@ async function enviar(data){
         "method": info[1].trim(),
         "url": info[2].trim(),
         "status": info[3].trim(),
-        "response_time": info[4].trim(),
-        "content_length": info[5].trim(),
+        "responseTime": info[4].trim(),
+        "contentLength": info[5].trim(),
     }
       axios.post("http://localhost:3002/api/v0/logs", body)
       .then((res) => console.log(res.data))
