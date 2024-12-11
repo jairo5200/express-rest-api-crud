@@ -11,7 +11,7 @@ info:
   version: 1.0.11
 
 servers:
-  - url: https:localhost:/inventario/api/v0
+  - url: https://localhost:3000/tienda/api/v0/
 tags:
   - name: products
     description: Endpoints de productos
@@ -235,8 +235,6 @@ paths:
       summary: hace logout a un usuario en la tienda
       description: hace logout a un usuario en la tienda
       operationId: logoutUser
-      requestBody:
-        description: hace logout a un usuario en la tienda
       responses:
         '200':
           description: Successful operation
