@@ -8,8 +8,7 @@ const {setupModels} = require('../db/models');
 
 //
 // guardamos la conexion a la base de datos en la variable sequelize
-const sequelize = new Sequelize(config.dbName, config.dbUser, config.dbPassword, {
-    host: '127.18.0.3',
+const sequelize = new Sequelize(config.dbUrl, {
     dialect: 'postgres',
   });
 

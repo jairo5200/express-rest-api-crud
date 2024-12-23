@@ -5,7 +5,7 @@ const routerApi = require('./routes');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const axios = require('axios')
+const axios = require('axios');
 
 
 // inciializamos una aplicacion en express
