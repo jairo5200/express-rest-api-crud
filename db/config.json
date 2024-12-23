@@ -1,10 +1,16 @@
 {
   "development": {
-    "username": "jairo",
-    "password": "admin123",
-    "database": "inventario",
-    "host": "",
-    "dialect": "postgres"
+    "username": "neondb_owner",
+    "password": "FU0LARMe1gwt",
+    "database": "neondb",
+    "host": "ep-restless-cell-a5qn44xs-pooler.us-east-2.aws.neon.tech",
+    "dialect": "postgres",
+    "dialectOptions": {
+            "ssl": {
+                "require": true,
+                "rejectUnauthorized": false
+            }
+    }
   },
   "test": {
     "username": "root",
