@@ -14,7 +14,7 @@ coverage
 # Benchmarking
 benchmarks/graphs
 
-db/*.json
+db/config.json
 
 
 postgres_data
